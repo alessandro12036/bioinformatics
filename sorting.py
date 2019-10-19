@@ -38,12 +38,15 @@ def bubble_sort(l):
 
 # Merge Sort
 def merge_sort(arr): 
-	if len(arr) == 1:
-		return arr
-	med = math.floor(len(arr)/2)
-	left = merge_sort(arr[:med])
-	right = merge_sort(arr[med:])
-	return _merge(left, right)
+    """ Divides the arr in smaller subarrays until you only have subarrays with len(a) which are ordered by definition
+    (there's nothing to compare them to) with a series of recursive calls. Then calls the merge function which merges
+    and orders the subarrays at the same time"""
+    if len(arr) == 1:
+        return arr
+    med = math.floor(len(arr)/2)
+    left = merge_sort(arr[:med])
+    right = merge_sort(arr[med:])
+    return _merge(left, right)
 	
 def _merge(l, r):   # Instead of using Selection Sort like I think we did in class, this algorithm 
                     # (which clearly only works with ordered arrays), makes the merge operation faster.
@@ -67,6 +70,10 @@ def _merge(l, r):   # Instead of using Selection Sort like I think we did in cla
 
 # Quick Sort
 def quick_sort(l):
+    """ Calls the partition function which in turn takes a pivot value (in this case it's always the right-most value),
+    brings everything smaller on its left side and everything bigger on its right, then calls the partition function again and keep doing the same
+    until the whole array is sorted (at some point giving the pivot_index + 1 will make the low higher than the high,
+    that's the cue the function needs to stop calling itself) """
     low = 0
     high = len(l)-1
     _partition(l, low, high)
@@ -101,7 +108,7 @@ def selection_sort(l):
     return l
 
 
-def time_sorting_functions(functions, names, dataset, iterations=100, verbose=True):
+def time_sorting_functions(functions, names, dataset_size=100, iterations=100, verbose=True):
     
     """ Wraps each function in a timing decorator and stores the means from n iterations for each function.
         Then prints out the results.
@@ -124,8 +131,8 @@ def time_sorting_functions(functions, names, dataset, iterations=100, verbose=Tr
         times = []
         func = timer(function, name) # from here on, when we call the function it will also measure its time
         for _ in range(iterations):
-            list_to_sort = list(dataset) # the list cast here is to get a new list everytime, otherwise it will get 
-                                         # the one already sorted by the previous function
+            list_to_sort = np.random.randint(0, 2000, dataset_size) # low and high arguments are chosen arbitrarily,
+                                                                    # feel free to change them
             sorted_list, t = func(list_to_sort)
             times.append(t)
         m = np.mean(times)
@@ -152,13 +159,13 @@ if __name__ == "__main__":
     # with a small dataset (merge_sort equal or worst to bubble_sort)
     time_sorting_functions([bubble_sort, selection_sort, quick_sort, merge_sort], 
                            names=["BubbleSort", "SelectionSort", "QuickSort", "MergeSort"],
-                           dataset=[56, 3, 2, 5, 6, 41, 4, 39, 67, 1])
+                           dataset_size=10)
     
-    # with a bigger dataset (merge_sort outperforms both bubble_sort and selection_sort, and it's only slightly slower
-    # than quicksort)
+    # with a bigger dataset (merge_sort outperforms both bubble_sort and selection_sort, and performs at the same level
+    # of quicksort)
     time_sorting_functions([bubble_sort, selection_sort, quick_sort, merge_sort], 
                            names=["BubbleSort", "SelectionSort", "QuickSort", "MergeSort"],
-                           dataset=np.random.randint(0, 2000, size=1000))
+                           dataset_size=1000)
 
                 
             
