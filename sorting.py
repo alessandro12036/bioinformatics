@@ -48,9 +48,7 @@ def merge_sort(arr):
     right = merge_sort(arr[med:])
     return _merge(left, right)
 	
-def _merge(l, r):   # Instead of using Selection Sort like I think we did in class, this algorithm 
-                    # (which clearly only works with ordered arrays), makes the merge operation faster.
-                    # I'm not sure it makes sense at all to use Selection Sort.
+def _merge(l, r):   
     i = 0
     j = 0
     sorted_arr = []
