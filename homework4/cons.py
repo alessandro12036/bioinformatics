@@ -2,6 +2,7 @@ from utilities import file_reader
 import numpy as np
 import os
 
+
 def cons(strings_list, save_file=False, file_name="answer.txt"):
     profile_matrix = []
     final_string = ""
